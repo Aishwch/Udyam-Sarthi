@@ -1,7 +1,6 @@
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
 
 # Virtual environment
 venv/
@@ -14,11 +13,12 @@ venv/
 # IDE
 .vscode/
 
-# OS
-.DS_Store
-Thumbs.db
+# Database
+*.db
+*.sqlite
+*.sqlite3
 
-# Testing / coverage
+# Testing
 .pytest_cache/
 .coverage
 htmlcov/

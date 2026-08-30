@@ -16,3 +16,12 @@ def health_check():
     return {
         "status": "healthy",
     }
+
+
+@router.get("/api/info")
+def api_info():
+    return {
+        "name": "Udyam-Sarthi",
+        "version": "1.0.0",
+        "description": "Backend API for Udyam-Sarthi",
+    }
