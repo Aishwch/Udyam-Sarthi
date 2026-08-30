@@ -1,0 +1,21 @@
+# UDYAM SARTHI — Frontend Dependencies & Technical Specifications
+# Major Project Prototype: Digital Business Companion for MSMEs
+
+# Core Runtime & Web Server Environment
+node>=18.0.0
+npm>=9.0.0
+
+# Frontend Single-Page Application Dependencies (package.json reference)
+react>=18.3.1
+react-dom>=18.3.1
+react-router-dom>=6.28.0
+recharts>=2.15.0
+lucide-react>=0.475.0
+
+# Build Tools & Dev Server
+vite>=6.0.5
+@vitejs/plugin-react>=4.3.4
+
+# Optional Static Server (Python 3.x built-in HTTP module)
+# Command: python -m http.server 3000
+python>=3.10.0
