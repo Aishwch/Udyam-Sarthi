@@ -1,0 +1,113 @@
+/* UDYAM SARTHI Design System Variables */
+
+:root {
+  /* Brand Primary Colors */
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-300: #93c5fd;
+  --primary-400: #60a5fa;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  --primary-700: #1d4ed8;
+  --primary-800: #1e40af;
+  --primary-900: #1e3a8a;
+  
+  /* Accent Secondary (Teal / Emerald for Growth & Sustainability) */
+  --accent-50: #ecfdf5;
+  --accent-100: #d1fae5;
+  --accent-400: #34d399;
+  --accent-500: #10b981;
+  --accent-600: #059669;
+  --accent-700: #047857;
+
+  /* Status Colors */
+  --success: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.15);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.15);
+  --danger: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.15);
+  --info: #3b82f6;
+  --info-bg: rgba(59, 130, 246, 0.15);
+
+  /* Data Provenance Tag Colors */
+  --tag-synthetic: #8b5cf6;
+  --tag-synthetic-bg: rgba(139, 92, 246, 0.18);
+  --tag-user: #06b6d4;
+  --tag-user-bg: rgba(6, 182, 212, 0.18);
+  --tag-estimated: #f59e0b;
+  --tag-estimated-bg: rgba(245, 158, 11, 0.18);
+  --tag-model: #3b82f6;
+  --tag-model-bg: rgba(59, 130, 246, 0.18);
+
+  /* Theme Defaults - High-Tech Dark Mode */
+  --bg-main: #0b0f19;
+  --bg-surface: #111827;
+  --bg-card: rgba(17, 24, 39, 0.75);
+  --bg-card-hover: rgba(31, 41, 55, 0.85);
+  --bg-elevated: #1f2937;
+  --bg-sidebar: #090d16;
+  --bg-topbar: rgba(11, 15, 25, 0.85);
+  
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-color-hover: rgba(59, 130, 246, 0.4);
+  --border-focus: #3b82f6;
+
+  --text-main: #f9fafb;
+  --text-muted: #9ca3af;
+  --text-dim: #6b7280;
+  --text-inverse: #0f172a;
+
+  /* Glassmorphism */
+  --glass-bg: rgba(17, 24, 39, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  --glass-backdrop: blur(16px);
+
+  /* Gradients */
+  --grad-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  --grad-accent: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --grad-hero: linear-gradient(135deg, #1e3a8a 0%, #0f172a 60%, #090d16 100%);
+  --grad-glow: radial-gradient(circle at 50% -20%, rgba(37, 99, 235, 0.25), transparent 70%);
+
+  /* Typography */
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', 'Inter', sans-serif;
+
+  /* Layout Sizes */
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 72px;
+  --topbar-height: 64px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Light Theme Overrides */
+[data-theme="light"] {
+  --bg-main: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  --bg-elevated: #f1f5f9;
+  --bg-sidebar: #0f172a;
+  --bg-topbar: rgba(255, 255, 255, 0.9);
+  
+  --border-color: #e2e8f0;
+  --border-color-hover: #3b82f6;
+
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-dim: #94a3b8;
+  --text-inverse: #ffffff;
+
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+}
