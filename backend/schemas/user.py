@@ -1,4 +1,10 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
+
+try:
+    import email_validator  # noqa
+    from pydantic import EmailStr
+except Exception:
+    EmailStr = str
 
 
 class UserCreate(BaseModel):

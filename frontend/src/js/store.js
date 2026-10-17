@@ -13,7 +13,7 @@ import {
 const STORAGE_KEY = 'UDYAM_SARTHI_STATE_V1';
 
 const getInitialState = () => {
-  const saved = localStorage.getItem(STORAGE_KEY);
+  const saved = typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
   if (saved) {
     try {
       return JSON.parse(saved);
@@ -68,7 +68,9 @@ class Store {
 
   saveState() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+      }
     } catch (e) {
       console.error("Failed to save state to localStorage", e);
     }
@@ -172,7 +174,9 @@ class Store {
 
   toggleTheme() {
     const newTheme = this.state.theme === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', newTheme);
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', newTheme);
+    }
     this.setState({ theme: newTheme });
   }
 
@@ -188,7 +192,9 @@ class Store {
   }
 
   resetDemoData() {
-    localStorage.removeItem(STORAGE_KEY);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem(STORAGE_KEY);
+    }
     this.state = getInitialState();
     this.saveState();
     this.notify();
