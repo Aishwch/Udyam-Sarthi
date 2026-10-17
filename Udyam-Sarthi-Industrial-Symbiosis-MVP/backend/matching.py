@@ -2,21 +2,21 @@ import math
 import re
 from functools import lru_cache
 
-from sentence_transformers import SentenceTransformer
-from sentence_transformers.util import cos_sim
-
-
-# ==================================================
-# AI SEMANTIC MODEL
-# ==================================================
-
-print("Loading AI semantic model...")
-
-AI_MODEL = SentenceTransformer(
-    "sentence-transformers/all-MiniLM-L6-v2"
-)
-
-print("AI semantic model loaded successfully.")
+# Safe loading of AI semantic model with automatic fallback
+AI_MODEL = None
+try:
+    import os
+    if os.environ.get("ENABLE_HF_MODEL", "0") == "1":
+        from sentence_transformers import SentenceTransformer
+        from sentence_transformers.util import cos_sim
+        print("Loading AI semantic model...")
+        AI_MODEL = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+        print("AI semantic model loaded successfully.")
+    else:
+        print("AI semantic model running in fast rule & token similarity mode.")
+except Exception as _e:
+    print(f"AI semantic model unavailable ({_e}), using robust heuristic and alias fallback.")
+    AI_MODEL = None
 
 
 # ==================================================
@@ -236,6 +236,15 @@ def _semantic_similarity_cached(
 
     if not text1 or not text2:
         return 0.0
+
+    if AI_MODEL is None:
+        words1 = set(clean_text(text1).split())
+        words2 = set(clean_text(text2).split())
+        if not words1 or not words2:
+            return 0.0
+        inter = len(words1 & words2)
+        union = len(words1 | words2)
+        return float(inter / union) if union > 0 else 0.0
 
     try:
 
@@ -1194,17 +1203,20 @@ def calculate_match(
     # TOTAL
     # --------------------------------------------------
 
-    total_score = (
-        material_points
-        +
-        quantity_points
-        +
-        distance_points
-        +
-        frequency_points
-        +
-        industry_points
-    )
+    # If materials are incompatible, there is no viable symbiosis match
+    if material_points <= 0:
+        total_score = 0.0
+    else:
+        total_score = min(
+            100.0,
+            (
+                material_points
+                + quantity_points
+                + distance_points
+                + frequency_points
+                + industry_points
+            )
+        )
 
     # --------------------------------------------------
     # RETURN RESULT
@@ -1377,6 +1389,17 @@ def calculate_match(
 
         "industry_score":
             industry_points,
+
+        # ==============================================
+        # EXPLAINABLE REASON
+        # ==============================================
+
+        "compatibility_reason": (
+            f"Material match '{supplier.material}' ({material_points}/45 pts), "
+            f"{distance_points}/20 proximity pts ({round(distance, 1)} km), "
+            f"{quantity_points}/20 quantity balance pts, and "
+            f"{frequency_points}/10 schedule consistency pts."
+        ),
 
         # ==============================================
         # FINAL SCORE

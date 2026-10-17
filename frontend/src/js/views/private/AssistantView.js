@@ -4,6 +4,44 @@ import { renderTopbar } from '../../components/Topbar.js';
 import { getIcon } from '../../components/IconLibrary.js';
 import { store } from '../../store.js';
 import { aiService } from '../../services/aiService.js';
+import { renderAssistantMessageHtml, escapeHtml } from '../../components/ChatMessageRenderer.js';
+
+function renderUserBubble(text, businessName) {
+  return `
+    <div class="chat-bubble chat-bubble-user">
+      <div class="flex items-center gap-2 mb-1" style="font-weight: 600; font-size: 0.75rem; opacity: 0.85;">
+        ${getIcon('user', 14)} You (${escapeHtml(businessName || 'Business')})
+      </div>
+      <div style="white-space: pre-wrap; word-break: break-word;">${escapeHtml(text)}</div>
+    </div>
+  `;
+}
+
+function renderAiBubble(text) {
+  return `
+    <div class="chat-bubble chat-bubble-ai">
+      <div class="flex items-center gap-2 mb-1" style="font-weight: 600; font-size: 0.75rem; opacity: 0.85;">
+        ${getIcon('bot', 14)} Udyam Sarthi Companion
+      </div>
+      <div class="chat-message-content">${renderAssistantMessageHtml(text)}</div>
+    </div>
+  `;
+}
+
+function renderTypingIndicator() {
+  return `
+    <div class="chat-bubble chat-bubble-ai chat-typing-bubble" id="chat-typing-indicator">
+      <div class="flex items-center gap-2 mb-1" style="font-weight: 600; font-size: 0.75rem; opacity: 0.85;">
+        ${getIcon('bot', 14)} Udyam Sarthi Companion is analyzing operations...
+      </div>
+      <div class="flex items-center gap-1.5 py-1">
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+      </div>
+    </div>
+  `;
+}
 
 export const AssistantView = () => {
   const { chatMessages, business } = store.getState();
@@ -25,16 +63,53 @@ export const AssistantView = () => {
       const text = userText || (inputEl ? inputEl.value.trim() : '');
       if (!text) return;
 
-      if (inputEl) inputEl.value = '';
+      if (inputEl) {
+        inputEl.value = '';
+        inputEl.disabled = true;
+      }
+      if (sendBtn) sendBtn.disabled = true;
 
-      // User Message
+      // 1. User Message: append to DOM & store
       store.addChatMessage(text, 'user');
-      window.location.hash = '#/assistant'; // re-render view with new user message
+      if (messagesContainer) {
+        messagesContainer.insertAdjacentHTML('beforeend', renderUserBubble(text, business?.name));
+        messagesContainer.insertAdjacentHTML('beforeend', renderTypingIndicator());
+        scrollToBottom();
+      }
 
-      // Generate AI response
-      const aiReply = await aiService.generateResponse(text);
-      store.addChatMessage(aiReply, 'ai');
-      window.location.hash = '#/assistant';
+      try {
+        // 2. Generate AI response
+        const aiReply = await aiService.generateResponse(text);
+
+        // Remove typing indicator
+        const typingEl = document.getElementById('chat-typing-indicator');
+        if (typingEl) typingEl.remove();
+
+        // 3. AI Message: append to DOM & store
+        store.addChatMessage(aiReply, 'ai');
+        if (messagesContainer) {
+          messagesContainer.insertAdjacentHTML('beforeend', renderAiBubble(aiReply));
+          scrollToBottom();
+        }
+      } catch (err) {
+        console.error("AI Companion generation error:", err);
+        const typingEl = document.getElementById('chat-typing-indicator');
+        if (typingEl) typingEl.remove();
+        if (messagesContainer) {
+          messagesContainer.insertAdjacentHTML('beforeend', `
+            <div class="chat-bubble chat-bubble-ai">
+              <div class="text-danger text-sm">Unable to process operational query at this time. Please try again.</div>
+            </div>
+          `);
+          scrollToBottom();
+        }
+      } finally {
+        if (inputEl) {
+          inputEl.disabled = false;
+          inputEl.focus();
+        }
+        if (sendBtn) sendBtn.disabled = false;
+      }
     };
 
     if (sendBtn) {
@@ -50,18 +125,19 @@ export const AssistantView = () => {
     // Suggested Questions Chips
     document.querySelectorAll('.suggestion-chip').forEach(chip => {
       chip.addEventListener('click', (e) => {
-        const question = e.currentTarget.textContent.trim();
-        handleSend(question);
+        const query = e.currentTarget.getAttribute('data-query') || e.currentTarget.textContent.trim();
+        handleSend(query);
       });
     });
   }, 0);
 
   const suggestedQuestions = [
-    "Why did my production fall this week?",
-    "Which machine is performing worst?",
-    "What can I do to reduce downtime?",
-    "Why is Machine A showing an alert?",
-    "What government schemes may help my business?"
+    { label: "Why is Machine A underperforming?", query: "Why is Machine A underperforming?" },
+    { label: "Compare Machine A, B and C", query: "Compare Machine A, B and C." },
+    { label: "How can I reduce scrap?", query: "How can I reduce scrap?" },
+    { label: "Which machine needs maintenance?", query: "Which machine needs maintenance?" },
+    { label: "What data is missing to diagnose Machine A?", query: "What data is missing to diagnose Machine A?" },
+    { label: "Diagnose scrap rate & causes", query: "My material scrap rate has increased this week. Based on the available operational data, identify the likely cause, provide the relevant KPI values, and suggest three practical actions. If the data is insufficient, tell me what information is missing." }
   ];
 
   return `
@@ -82,19 +158,12 @@ export const AssistantView = () => {
           <div class="chat-container">
             <!-- Messages Scroll Box -->
             <div class="chat-messages" id="chat-messages-box">
-              ${chatMessages.map(msg => `
-                <div class="chat-bubble ${msg.sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai'}">
-                  <div class="flex items-center gap-2 mb-1" style="font-weight: 600; font-size: 0.75rem; opacity: 0.8;">
-                    ${msg.sender === 'user' ? `${getIcon('user', 14)} You (${business.name})` : `${getIcon('bot', 14)} Udyam Sarthi Companion`}
-                  </div>
-                  <div>${msg.text.replace(/\n/g, '<br/>')}</div>
-                </div>
-              `).join('')}
+              ${chatMessages.map(msg => msg.sender === 'user' ? renderUserBubble(msg.text, business.name) : renderAiBubble(msg.text)).join('')}
             </div>
 
             <!-- Suggested Prompt Chips -->
             <div class="chat-suggestions">
-              ${suggestedQuestions.map(q => `<button class="suggestion-chip">${q}</button>`).join('')}
+              ${suggestedQuestions.map(q => `<button class="suggestion-chip" data-query="${escapeHtml(q.query)}">${escapeHtml(q.label)}</button>`).join('')}
             </div>
 
             <!-- Input Bar -->

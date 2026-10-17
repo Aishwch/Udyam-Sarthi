@@ -184,6 +184,68 @@ export const DashboardView = () => {
             </div>
           </div>
 
+          <!-- Data-Driven Operational Recommendations Panel (Explainable AI Engine) -->
+          <div class="glass-card mb-6" style="border-left: 4px solid var(--accent-500);">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h3 class="text-base font-bold text-main flex items-center gap-2">
+                  <span class="text-accent">${getIcon('zap', 18)}</span>
+                  Explainable Operational Recommendations
+                </h3>
+                <p class="text-xs text-muted">Data-driven suggestions derived directly from plant downtime, utilization, and energy metrics.</p>
+              </div>
+              <a href="#/growth" class="btn btn-secondary btn-sm">Explore All Recommendations</a>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4" id="dashboard-recommendations-list">
+              <!-- Default Initial Render (Instant) -->
+              <div class="glass-card text-xs flex-col justify-between" style="padding: 1rem; background: rgba(15, 23, 42, 0.6); border-top: 3px solid var(--warning);">
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="badge badge-warning text-xxs">High Priority</span>
+                    <span class="text-dim text-xxs">Downtime: ${kpis.downtimeHours} hrs</span>
+                  </div>
+                  <strong class="text-sm text-main display-block mb-1">Mitigate Unplanned Nozzle Stoppages</strong>
+                  <p class="text-muted mb-2" style="line-height: 1.4;">Machine A experienced recurring nozzle blockages during peak shift runtime.</p>
+                </div>
+                <div style="border-top: 1px solid var(--border-color); padding-top: 0.5rem;" class="flex items-center justify-between">
+                  <span class="text-xxs text-primary font-semibold">Action: 15-min shift purge</span>
+                  <a href="#/diagnosis" class="text-accent text-xxs">Diagnose →</a>
+                </div>
+              </div>
+
+              <div class="glass-card text-xs flex-col justify-between" style="padding: 1rem; background: rgba(15, 23, 42, 0.6); border-top: 3px solid var(--primary);">
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="badge badge-info text-xxs">Medium Priority</span>
+                    <span class="text-dim text-xxs">Energy: ${kpis.energyPerUnit} kWh/u</span>
+                  </div>
+                  <strong class="text-sm text-main display-block mb-1">Audit Thermal Oven Seals</strong>
+                  <p class="text-muted mb-2" style="line-height: 1.4;">Specific energy intensity is above the 3.20 kWh benchmark due to heater pre-heating.</p>
+                </div>
+                <div style="border-top: 1px solid var(--border-color); padding-top: 0.5rem;" class="flex items-center justify-between">
+                  <span class="text-xxs text-primary font-semibold">Action: Seal gasket audit</span>
+                  <a href="#/analytics" class="text-accent text-xxs">Analyze →</a>
+                </div>
+              </div>
+
+              <div class="glass-card text-xs flex-col justify-between" style="padding: 1rem; background: rgba(15, 23, 42, 0.6); border-top: 3px solid var(--accent-500);">
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="badge badge-success text-xxs">Circularity</span>
+                    <span class="text-dim text-xxs">Scrap: ${kpis.totalScrapKg} kg</span>
+                  </div>
+                  <strong class="text-sm text-main display-block mb-1">Exchange Powder Coating Scrap</strong>
+                  <p class="text-muted mb-2" style="line-height: 1.4;">Recovered spray powder by-product matches secondary industrial partner requirements.</p>
+                </div>
+                <div style="border-top: 1px solid var(--border-color); padding-top: 0.5rem;" class="flex items-center justify-between">
+                  <span class="text-xxs text-accent font-semibold">Action: List on Symbiosis</span>
+                  <a href="#/symbiosis" class="text-accent text-xxs">Explore →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Machine Performance Table -->
           <div class="glass-card">
             <div class="flex items-center justify-between mb-4">
