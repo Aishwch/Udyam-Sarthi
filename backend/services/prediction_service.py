@@ -7,6 +7,13 @@ MODEL_PATH = Path(__file__).resolve().parent.parent.parent / "ai" / "models" / "
 
 _MODEL_BUNDLE = None
 
+features_list = [
+    "runtime",
+    "downtime",
+    "expected_output",
+    "energy_kwh",
+    "scrap_units"
+]
 
 def get_model_bundle():
     global _MODEL_BUNDLE
