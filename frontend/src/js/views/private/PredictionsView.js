@@ -1,11 +1,11 @@
-/* UDYAM SARTHI Predictive Insights View */
+﻿/* UDYAM SARTHI Predictive Insights View */
 import { renderSidebar } from '../../components/Sidebar.js';
 import { renderTopbar } from '../../components/Topbar.js';
 import { renderTagBadge } from '../../components/TagBadge.js';
 import { getIcon } from '../../components/IconLibrary.js';
 import { store } from '../../store.js';
 
-const API_BASE_URL = window.API_BASE_URL || 'http://127.0.0.1:8000';
+const API_BASE_URL = window.API_BASE_URL || 'http://127.0.0.1:8001';
 
 let predictionState = {
   runtime: 7.0,
@@ -87,7 +87,7 @@ function renderPredictionsBody() {
           </div>
           <div class="flex justify-between">
             <span class="text-muted">Model Validation:</span>
-            <span>MAE: ±${predictionState.mae} Units</span>
+            <span>MAE: Â±${predictionState.mae} Units</span>
           </div>
         </div>
       </div>

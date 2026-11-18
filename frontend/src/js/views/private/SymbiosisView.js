@@ -1,11 +1,11 @@
-/* UDYAM SARTHI Industrial Symbiosis & Resource Exchange View */
+﻿/* UDYAM SARTHI Industrial Symbiosis & Resource Exchange View */
 import { renderSidebar } from '../../components/Sidebar.js';
 import { renderTopbar } from '../../components/Topbar.js';
 import { renderTagBadge } from '../../components/TagBadge.js';
 import { getIcon } from '../../components/IconLibrary.js';
 import { store } from '../../store.js';
 
-const API_BASE_URL = window.API_BASE_URL || 'http://127.0.0.1:8000';
+const API_BASE_URL = window.API_BASE_URL || 'http://127.0.0.1:8001';
 
 // Component state cache for interactive filtering and tabs
 const symbiosisState = {
@@ -293,13 +293,13 @@ function renderSymbiosisContent() {
       <!-- Match Cards Grid -->
       ${loading ? `
         <div class="glass-card text-center" style="padding: 3rem;">
-          <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">⏳</div>
+          <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">â³</div>
           <h3 class="text-base font-bold text-main mb-1">Calculating Industrial Symbiosis Matches...</h3>
           <p class="text-xs text-muted">Matching material specifications, geographic distance, and volume balances.</p>
         </div>
       ` : filteredMatches.length === 0 ? `
         <div class="glass-card text-center" style="padding: 3rem;">
-          <div style="font-size: 2rem; margin-bottom: 0.75rem;">🔍</div>
+          <div style="font-size: 2rem; margin-bottom: 0.75rem;">ðŸ”</div>
           <h3 class="text-base font-bold text-main mb-1">No Matches Found</h3>
           <p class="text-xs text-muted mb-4">No industrial partners matched your search criteria. Try lowering the minimum score or clearing filters.</p>
           <button id="reset-filters-btn" class="btn btn-secondary btn-sm">Reset All Filters</button>
@@ -724,7 +724,7 @@ function attachSymbiosisEventHandlers() {
         if (feedbackMsg) {
           feedbackMsg.style.display = 'block';
           feedbackMsg.className = 'mb-4 text-xs text-success';
-          feedbackMsg.innerText = `✓ Successfully registered ${created.name} in Industrial Symbiosis! Recalculating matches...`;
+          feedbackMsg.innerText = `âœ“ Successfully registered ${created.name} in Industrial Symbiosis! Recalculating matches...`;
         }
 
         store.addToast(`Successfully added ${name} to resource exchange network!`, 'success');
