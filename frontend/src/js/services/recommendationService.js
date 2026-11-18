@@ -1,7 +1,7 @@
-/* UDYAM SARTHI Explainable Data-Driven Recommendation Service */
+﻿/* UDYAM SARTHI Explainable Data-Driven Recommendation Service */
 import { dataService } from './dataService.js';
 
-const API_BASE_URL = window.API_BASE_URL || 'http://127.0.0.1:8000';
+const API_BASE_URL = window.API_BASE_URL || 'http://127.0.0.1:8001';
 
 export const recommendationService = {
   getRecommendations: async () => {
@@ -51,7 +51,7 @@ export const recommendationService = {
         category: 'Downtime Reduction',
         trigger_condition: `Downtime recorded at ${payload.downtime_hours} hrs (Threshold: > 2.5 hrs)`,
         current_value: `${payload.downtime_hours} Hours`,
-        benchmark_threshold: '≤ 1.5 Hours / Shift',
+        benchmark_threshold: 'â‰¤ 1.5 Hours / Shift',
         why_it_matters: 'Unplanned downtime bottlenecks production throughput, idles downstream stages, and increases indirect operating costs.',
         suggested_action: 'Schedule 15-minute autonomous maintenance purge at shift handover and verify pneumatic line pressure stability.',
         cta_route: '#/diagnosis'
@@ -67,7 +67,7 @@ export const recommendationService = {
         category: 'Capacity Optimization',
         trigger_condition: `Plant utilization is ${payload.utilization_rate}% (Threshold: < 85.0%)`,
         current_value: `${payload.utilization_rate}%`,
-        benchmark_threshold: '≥ 85.0% Plant Utilization',
+        benchmark_threshold: 'â‰¥ 85.0% Plant Utilization',
         why_it_matters: 'Sub-optimal machine runtime inflates fixed asset amortization per unit and ties up factory floor capital.',
         suggested_action: 'Pre-stage raw materials 30 minutes prior to shift commencement and cross-train operators on rapid changeover procedures.',
         cta_route: '#/machines'
@@ -81,9 +81,9 @@ export const recommendationService = {
         title: 'Reduce Peak Specific Energy Consumption',
         priority: 'Medium',
         category: 'Energy Efficiency',
-        trigger_condition: `Energy intensity reached ${payload.energy_per_unit} kWh/unit (Threshold: ≥ 3.5 kWh/unit)`,
+        trigger_condition: `Energy intensity reached ${payload.energy_per_unit} kWh/unit (Threshold: â‰¥ 3.5 kWh/unit)`,
         current_value: `${payload.energy_per_unit} kWh/Unit`,
-        benchmark_threshold: '≤ 3.20 kWh / Unit',
+        benchmark_threshold: 'â‰¤ 3.20 kWh / Unit',
         why_it_matters: 'Elevated energy consumption per unit points to process heat loss, motor idling, or uncompensated power factor penalties.',
         suggested_action: 'Inspect pre-treatment thermal chamber insulation gaskets and evaluate TEQUP government scheme energy audit subsidies.',
         cta_route: '#/analytics'
@@ -97,9 +97,9 @@ export const recommendationService = {
         title: 'Monetize Scrap & Re-evaluate Line Tolerance',
         priority: payload.total_scrap_kg > 25.0 ? 'High' : 'Medium',
         category: 'Material Circularity',
-        trigger_condition: `Scrap generation reached ${payload.total_scrap_kg} kg (Threshold: ≥ 15.0 kg)`,
+        trigger_condition: `Scrap generation reached ${payload.total_scrap_kg} kg (Threshold: â‰¥ 15.0 kg)`,
         current_value: `${payload.total_scrap_kg} Kg`,
-        benchmark_threshold: '≤ 10.0 Kg / Week',
+        benchmark_threshold: 'â‰¤ 10.0 Kg / Week',
         why_it_matters: 'Scrap losses directly destroy bill-of-materials margin and create solid industrial disposal liabilities.',
         suggested_action: 'Recalibrate powder coating dispenser nozzle pressure and list off-spec by-product on the Industrial Symbiosis exchange.',
         cta_route: '#/symbiosis'
@@ -113,9 +113,9 @@ export const recommendationService = {
         title: 'Recover Line Output Variance',
         priority: 'Medium',
         category: 'Production Recovery',
-        trigger_condition: `Line efficiency at ${payload.efficiency_rate}% (Target: ≥ 90.0%)`,
+        trigger_condition: `Line efficiency at ${payload.efficiency_rate}% (Target: â‰¥ 90.0%)`,
         current_value: `${payload.efficiency_rate}%`,
-        benchmark_threshold: '≥ 95.0% Rated Capacity',
+        benchmark_threshold: 'â‰¥ 95.0% Rated Capacity',
         why_it_matters: 'Persistent negative production variance risks customer delivery SLAs and increases overtime shift costs.',
         suggested_action: 'Compare individual machine efficiency metrics on the Operations page to rebalance line batch loading.',
         cta_route: '#/operations'
